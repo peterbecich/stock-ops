@@ -10,15 +10,30 @@ services:
       - "127.0.0.1:8000:8000"
     environment:
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+  # stock-postgres:
+  #   image: postgres:10
+  #   restart: always
+  #   environment:
+  #     - POSTGRES_PASSWORD:'${POSTGRES_PASSWORD}'
+  #   expose:
+  #     - "5432"
+
   stock-postgres:
-    image: postgres:10
+    build:
+      context: .
+      dockerfile: dockerfiles/postgres.dockerfile
+      
     restart: always
     environment:
       - POSTGRES_PASSWORD:'${POSTGRES_PASSWORD}'
     expose:
       - "5432"
-    # ports:
-    #   - "5433:5432"
+
+  
+  stock-redis:
+    image: redis:4-alpine
+    expose:
+      - "6379"
       
     # nginx:
     #     build: ./nginx
