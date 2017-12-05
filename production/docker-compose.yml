@@ -1,0 +1,29 @@
+version: '3'
+services:
+  stock-servant:
+    build: .
+    image: peterbecich/stock-servant-stock-servant
+    # command: stock-servant
+    # expose:
+    #     - "8080"
+    ports:
+      - "127.0.0.1:80:80"
+    environment:
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+  stock-postgres:
+    image: postgres:10
+    restart: always
+    environment:
+      - POSTGRES_PASSWORD:'${POSTGRES_PASSWORD}'
+    expose:
+      - "5432"
+    # ports:
+    #   - "5433:5432"
+      
+    # nginx:
+    #     build: ./nginx
+    #     image: nginx
+    #     ports:
+    #         - "8080:80"
+    #     depends_on:
+    #         - stock-servant
