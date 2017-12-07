@@ -3,10 +3,11 @@ services:
   stock-servant:
     build: .
     image: peterbecich/stock-servant-stock-servant
-    # ports:
-    #   - "127.0.0.1:80:80"
-    expose:
-      - "80"
+    ports:
+      # - "127.0.0.1:80:80"
+      - "0.0.0.0:80:80"
+    # expose:
+    #   - "80"
     environment:
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
   stock-postgres:
