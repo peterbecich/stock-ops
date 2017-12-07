@@ -3,27 +3,44 @@ services:
   stock-servant:
     build: .
     image: peterbecich/stock-servant-stock-servant
-    # command: stock-servant
-    # expose:
-    #     - "8080"
     ports:
       - "127.0.0.1:80:80"
     environment:
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
   stock-postgres:
-    image: postgres:10
+    build:
+      context: .
+      dockerfile: dockerfiles/postgres.dockerfile
     restart: always
     environment:
       - POSTGRES_PASSWORD:'${POSTGRES_PASSWORD}'
     expose:
       - "5432"
-    # ports:
-    #   - "5433:5432"
-      
-    # nginx:
-    #     build: ./nginx
-    #     image: nginx
-    #     ports:
-    #         - "8080:80"
-    #     depends_on:
-    #         - stock-servant
+  stock-redis:
+    image: redis:4-alpine
+    expose:
+      - "6379"
+  # nginx:
+  #     build: ./nginx
+  #     image: nginx
+  #     ports:
+  #         - "8080:80"
+  #     depends_on:
+  #         - stock-servant
+
+  # https://docs.docker.com/compose/startup-order/
+  # https://stackoverflow.com/questions/31746182/docker-compose-wait-for-container-x-before-starting-y
+  # https://github.com/jwilder/dockerize
+  # TODO run this only after postgres init script complete
+  # load-stocks:
+  #   image: peterbecich/stock-common-load-stocks
+  #   environment:
+  #     - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+  #   depends_on:
+  #     - stock-postgres
+  #   deploy:
+  #     restart_policy:
+  #       condition: on-failure
+  #       max_attempts: 5
+  #       delay: 10s
+  #       window: 30s
