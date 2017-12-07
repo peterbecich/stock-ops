@@ -2,9 +2,8 @@ version: '3'
 services:
   stock-servant:
     build: .
-    image: peterbecich/stock-servant-stock-servant
+    image: peterbecich/stock-servant-stock-servant:latest
     ports:
-      # - "127.0.0.1:80:80"
       - "0.0.0.0:80:80"
     # expose:
     #   - "80"
@@ -19,6 +18,8 @@ services:
       - POSTGRES_PASSWORD:'${POSTGRES_PASSWORD}'
     expose:
       - "5432"
+    volumes:
+      - "stock-postgres-volume:/var/lib/postgresql/data"
   stock-redis:
     image: redis:4-alpine
     expose:
@@ -47,3 +48,6 @@ services:
   #       max_attempts: 5
   #       delay: 10s
   #       window: 30s
+
+volumes:
+  stock-postgres-volume:
