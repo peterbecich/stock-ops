@@ -1,0 +1,1 @@
+/home/peterbecich/stock/stock-ops/local/dockerfiles/postgres.dockerfile
