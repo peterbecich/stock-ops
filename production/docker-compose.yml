@@ -2,6 +2,8 @@ version: '3'
 services:
   stock-servant:
     build: .
+    networks:
+      - stock-network
     image: peterbecich/stock-servant-stock-servant:latest
     ports:
       - "0.0.0.0:80:80"
@@ -9,10 +11,15 @@ services:
     #   - "80"
     environment:
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    deploy:  # https://forums.docker.com/t/when-to-use-docker-compose-and-when-to-use-docker-swarm/29107/5
+      replicas: 4
   stock-postgres:
     build:
       context: .
       dockerfile: dockerfiles/postgres.dockerfile
+    image: peterbecich/stock-postgres:latest
+    networks:
+      - stock-network
     restart: always
     environment:
       - POSTGRES_PASSWORD:'${POSTGRES_PASSWORD}'
@@ -22,8 +29,17 @@ services:
       - "stock-postgres-volume:/var/lib/postgresql/data"
   stock-redis:
     image: redis:4-alpine
+    networks:
+      - stock-network
     expose:
       - "6379"
+
+networks:
+  stock-network:
+
+volumes:
+  stock-postgres-volume:
+      
   # nginx:
   #     build: ./nginx
   #     image: nginx
@@ -49,5 +65,3 @@ services:
   #       delay: 10s
   #       window: 30s
 
-volumes:
-  stock-postgres-volume:
