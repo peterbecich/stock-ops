@@ -22,8 +22,13 @@ if [ "$TRAVIS_BRANCH" == "master" ]; then
     git checkout production || exit
     echo "git merge $TRAVIS_COMMIT"
     git merge --squash "$TRAVIS_COMMIT" || exit
+    echo "remotes"
+    git remote -v
     echo "git push origin production"
-    git push origin production
+    git push --verbose origin production
+    echo "pushed"
+    echo "git remote show origin"
+    git remote show origin
 fi
 
 if [ "$TRAVIS_BRANCH" == "production" ]; then
