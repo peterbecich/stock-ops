@@ -20,10 +20,14 @@ if [ "$TRAVIS_BRANCH" == "master" ]; then
     git checkout -qf $TRAVIS_COMMIT
     echo "git checkout production"
     git checkout production || exit
-    echo "git merge $TRAVIS_COMMIT"
-    git merge --squash "$TRAVIS_COMMIT" || exit
-    echo "git commit --no-edit"
-    git commit --no-edit
+    # echo "git merge $TRAVIS_COMMIT"
+    # git merge --squash "$TRAVIS_COMMIT" || exit
+    # echo "git commit --no-edit"
+    # git commit --no-edit
+
+    echo "git merge --ff --ff-only master"
+    git merge --ff --ff-only master
+    
     echo "remotes"
     git remote -v
     echo "git push origin production"
