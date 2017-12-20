@@ -10,6 +10,13 @@ df -h
 export GIT_COMMITTER_EMAIL='travis@travis'
 export GIT_COMMITTER_NAME='Travis CI'
 
+echo "TRAVIS_BRANCH"
+echo $TRAVIS_BRANCH
+echo "TRAVIS_REPO_SLUG"
+echo $TRAVIS_REPO_SLUG
+echo "TRAVIS_TAG"
+echo $TRAVIS_TAG
+
 if [ "$TRAVIS_BRANCH" == "master" ]; then
     echo "merge into production; check out deep repo"
     # https://stackoverflow.com/a/32580822/1007926
@@ -35,12 +42,17 @@ if [ "$TRAVIS_BRANCH" == "master" ]; then
     echo "pushed"
     echo "git remote show origin"
     git remote show origin
-fi
 
-if [ "$TRAVIS_BRANCH" == "production" ]; then
+elif [ "$TRAVIS_BRANCH" == "production" ]; then
+
     echo "CI build of production branch successful"
+    
+elif [ "$TRAVIS_BRANCH" != "production" && "$TRAVIS_BRANCH" != "production" ]; then
+
     docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
     echo "logged into Docker Hub"
     echo "docker push $TRAVIS_REPO_SLUG"
     docker push $TRAVIS_REPO_SLUG
+    
 fi
+
