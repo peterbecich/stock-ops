@@ -33,6 +33,22 @@ services:
       - stock-network
     expose:
       - "6379"
+  # https://github.com/djmaze/shepherd
+  #--constraint "node.role==manager" \
+  #--mount type=bind,source=/var/run/docker.sock,target=/var/run/docker.sock,ro \
+  # https://docs.docker.com/compose/compose-file/#volumes
+  stock-shepherd:
+    image: mazzolino/shepherd
+    deploy:
+      replicas: 1
+    volumes:
+      - type: bind
+        source: /var/run/docker.sock
+        target: /var/run/docker.sock
+        nocopy: true
+    constraints:
+      - node.role == manager
+      
 
 networks:
   stock-network:
