@@ -4,7 +4,7 @@ services:
     build: .
     networks:
       - stock-network
-    image: peterbecich/stock-servant-stock-servant:latest
+    image: peterbecich/stock-servant-stock-servant-local:latest
     ports:
       - "127.0.0.1:8000:8000"
     environment:
