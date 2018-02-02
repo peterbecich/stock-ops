@@ -57,29 +57,3 @@ networks:
 
 volumes:
   stock-postgres-volume:
-      
-  # nginx:
-  #     build: ./nginx
-  #     image: nginx
-  #     ports:
-  #         - "8080:80"
-  #     depends_on:
-  #         - stock-servant
-
-  # https://docs.docker.com/compose/startup-order/
-  # https://stackoverflow.com/questions/31746182/docker-compose-wait-for-container-x-before-starting-y
-  # https://github.com/jwilder/dockerize
-  # TODO run this only after postgres init script complete
-  # load-stocks:
-  #   image: peterbecich/stock-common-load-stocks
-  #   environment:
-  #     - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-  #   depends_on:
-  #     - stock-postgres
-  #   deploy:
-  #     restart_policy:
-  #       condition: on-failure
-  #       max_attempts: 5
-  #       delay: 10s
-  #       window: 30s
-

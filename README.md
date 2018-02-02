@@ -13,3 +13,21 @@ Part of demo project for web service.  Data from [https://www.alphavantage.co/](
 
 Demo:
 [http://www.peterbecich.me/index.html](http://www.peterbecich.me/index.html)
+
+
+## Quick start with Docker Swarm
+
+```
+ docker stack deploy --compose-file docker-compose.yml stocks
+```
+
+```
+docker service create --replicas 1 --name stock-common-load-stocks --network stocks_stock-network -e "POSTGRES_PASSWORD=${POSTGRES_PASSWORD}" peterbecich/stock-common-load-stocks
+```
+
+```
+docker service create --replicas 1 --name stock-collector --network stocks_stock-network -e "POSTGRES_PASSWORD=${POSTGRES_PASSWORD}" -e "ALPHA_VANTAGE_KEY=${alpha_vantage_key}" peterbecich/stock-collector-stock-collector:latest
+
+```
+
+

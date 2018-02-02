@@ -1,13 +1,12 @@
-version: '3'
+version: '3.2'
 services:
   stock-servant:
     build: .
     networks:
       - stock-network
-    image: peterbecich/stock-servant-stock-servant-local:latest
+    image: peterbecich/stock-servant-stock-servant:latest
     ports:
-      # - "127.0.0.1:8000:8000"
-      - "0.0.0.0:8000:8000"
+      - "127.0.0.1:8000:8000"
     environment:
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
     deploy:  # https://forums.docker.com/t/when-to-use-docker-compose-and-when-to-use-docker-swarm/29107/5
@@ -32,38 +31,27 @@ services:
       - stock-network
     expose:
       - "6379"
+  # https://github.com/djmaze/shepherd
+  #--constraint "node.role==manager" \
+  #--mount type=bind,source=/var/run/docker.sock,target=/var/run/docker.sock,ro \
+  # https://docs.docker.com/compose/compose-file/#volumes
+  # stock-shepherd:
+  #   image: mazzolino/shepherd
+  #   deploy:
+  #     replicas: 1
+  #     placement:
+  #       constraints:
+  #         - node.role == manager
 
-volumes:
-  stock-postgres-volume:
+  #   volumes:
+  #     - type: bind
+  #       source: /var/run/docker.sock
+  #       target: /var/run/docker.sock
+  #       nocopy: true
+      
 
-# https://docs.docker.com/compose/networking/#specify-custom-networks
 networks:
   stock-network:
 
-
-# other services
-
-  # nginx:
-  #     build: ./nginx
-  #     image: nginx
-  #     ports:
-  #         - "8080:80"
-  #     depends_on:
-  #         - stock-servant
-
-  # https://docs.docker.com/compose/startup-order/
-  # https://stackoverflow.com/questions/31746182/docker-compose-wait-for-container-x-before-starting-y
-  # https://github.com/jwilder/dockerize
-  # TODO run this only after postgres init script complete
-  # load-stocks:
-  #   image: peterbecich/stock-common-load-stocks
-  #   environment:
-  #     - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-  #   depends_on:
-  #     - stock-postgres
-  #   deploy:
-  #     restart_policy:
-  #       condition: on-failure
-  #       max_attempts: 5
-  #       delay: 10s
-  #       window: 30s
+volumes:
+  stock-postgres-volume:
